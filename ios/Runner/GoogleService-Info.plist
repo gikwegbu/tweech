@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>753109146968-gig13d00rkg6pfctr58f1ni6r7orfd53.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.753109146968-gig13d00rkg6pfctr58f1ni6r7orfd53</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDRiDeavytCB4SyYS6G0oScA10UMbMV0DQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>753109146968</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.netlify.gikwegbu.twee-ch</string>
+	<key>PROJECT_ID</key>
+	<string>twee-ch</string>
+	<key>STORAGE_BUCKET</key>
+	<string>twee-ch.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:753109146968:ios:c3d14703d8d1f24517592d</string>
+</dict>
+</plist>

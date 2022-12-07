@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               CustomTextField(controller: _passwordController),
               const SizedBox(
-                height: 30,
+                height: 10,
               ),
               CustomButton(
                 text: 'Login',

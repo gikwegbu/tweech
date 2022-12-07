@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "753109146968",
+    "project_id": "twee-ch",
+    "storage_bucket": "twee-ch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753109146968:android:3cda80bf28ecf93317592d",
+        "android_client_info": {
+          "package_name": "app.netlify.gikwegbu.twee_ch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753109146968-2in1dv16p9g3p123ovogqpmckgvqhk1i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.netlify.gikwegbu.twee_ch",
+            "certificate_hash": "90a4cfccaeef495f39b2c11bd47f9a55eb4567e9"
+          }
+        },
+        {
+          "client_id": "753109146968-k0lrt2q848u9p3eluo77alhmv56355mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS_YKZhDmxMEkxOIZH7w003r54ugkP7GM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753109146968-k0lrt2q848u9p3eluo77alhmv56355mt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "753109146968-gig13d00rkg6pfctr58f1ni6r7orfd53.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.netlify.gikwegbu.twee-ch"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

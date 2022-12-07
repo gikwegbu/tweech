@@ -1,4 +1,4 @@
-package app.netlify.gikwegbu.tweech
+package app.netlify.gikwegbu.twee_ch
 
 import io.flutter.embedding.android.FlutterActivity
 

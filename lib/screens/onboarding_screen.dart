@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tweech/screens/login_screen.dart';
 import 'package:tweech/screens/signup_screen.dart';
+import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -32,7 +33,7 @@ class OnboardingScreen extends StatelessWidget {
             CustomButton(
               text: 'Login',
               press: () {
-                Navigator.pushNamed(context, LoginScreen.routeName);
+                navigateTo(context, LoginScreen.routeName);
               },
             ),
             const SizedBox(
@@ -41,7 +42,7 @@ class OnboardingScreen extends StatelessWidget {
             CustomButton(
               text: 'Sign Up',
               press: () {
-                Navigator.pushNamed(context, SignupScreen.routeName);
+                navigateTo(context, SignupScreen.routeName);
               },
             ),
             const SizedBox(

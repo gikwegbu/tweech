@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tweech/resources/auth_methods.dart';
 import 'package:tweech/screens/homeScreen.dart';
+import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 import 'package:tweech/widget/custom_textfield.dart';
 import 'package:tweech/utils/regex.dart';
@@ -194,6 +195,9 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   void dispose() {
     _passwordFocus.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -212,7 +216,7 @@ class _SignupScreenState extends State<SignupScreen> {
       );
 
       if (res) {
-        Navigator.pushNamed(context, HomeScreen.routeName);
+        navigateAndClearPrev(context, HomeScreen.routeName);
       }
       setState(() {
         _signingUp = false;

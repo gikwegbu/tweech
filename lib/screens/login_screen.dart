@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10,
               ),
-              CustomTextField(controller: _emailController),
+              CustomTextField(inputType: TextInputType.emailAddress,icon: Icons.email_outlined,controller: _emailController, validator: (val){}),
               const SizedBox(
                 height: 20,
               ),
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10,
               ),
-              CustomTextField(controller: _passwordController),
+              CustomTextField(inputType: TextInputType.visiblePassword,icon: Icons.remove_red_eye,controller: _passwordController, validator: (val){}),
               const SizedBox(
                 height: 10,
               ),

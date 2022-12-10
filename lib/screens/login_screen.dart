@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tweech/resources/auth_methods.dart';
-import 'package:tweech/screens/homeScreen.dart';
+import 'package:tweech/screens/home_screen.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 import 'package:tweech/widget/custom_textfield.dart';

@@ -202,6 +202,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void userSignup() async {
+    toggleKeypad(context);
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {

@@ -2,11 +2,13 @@ class User {
   final String uid;
   final String username;
   final String email;
+  // final List<String> followers = [];
 
   User({
     required this.uid,
     required this.username,
     required this.email,
+    // required this.followers,
   });
 
   Map<String, dynamic> toMap() {
@@ -14,6 +16,7 @@ class User {
       'uid': uid,
       'username': username,
       'email': email,
+      // 'followers': followers,
     };
   }
 
@@ -22,6 +25,7 @@ class User {
      uid: map['uid'] ?? "",
      username: map['username'] ?? "",
      email: map['email'] ?? "",
+     // followers: map['followers'] ?? "",
    );
   }
 }

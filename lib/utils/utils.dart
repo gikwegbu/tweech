@@ -34,4 +34,12 @@ Future<Uint8List?> imagePicker() async {
     //Use path here, as it's on a mobile device.
     return await File(pickedImage.files.single.path!).readAsBytes();
   }
+  return null;
+}
+
+toggleKeypad(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+  if (!currentFocus.hasPrimaryFocus) {
+    currentFocus.unfocus();
+  }
 }

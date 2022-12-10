@@ -99,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Center(
                     child: CircularProgressIndicator.adaptive(),
                   ),
-                Visibility(
+                  Visibility(
                   visible: !_signingin,
                   child: CustomButton(
                     text: 'Login',
@@ -115,6 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() async {
+    toggleKeypad(context);
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       setState(() {

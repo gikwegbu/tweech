@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:tweech/resources/firestore_methods.dart';
+import 'package:tweech/screens/broadcast_screen.dart';
 import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
@@ -17,6 +19,7 @@ class GoLiveScreen extends StatefulWidget {
 class _GoLiveScreenState extends State<GoLiveScreen> {
   late TextEditingController _titleController;
   Uint8List? _thumbnail;
+  bool _goingLive = false;
 
   @override
   initState() {
@@ -27,17 +30,34 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: GestureDetector(
-        onTap: _selectThumbnail,
-        child: _thumbnail != null
-            ? SizedBox(
-                height: 350,
-                child: Image.memory(_thumbnail!),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DottedBorder(
+      child: ListView(
+        children: [
+          const SizedBox(
+            height: 15,
+          ),
+          _thumbnail != null
+              ? GestureDetector(
+                  onTap: _selectThumbnail,
+                  child: Container(
+                    // height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      child: Image.memory(
+                        _thumbnail!,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                )
+              : GestureDetector(
+                  onTap: _selectThumbnail,
+                  child: DottedBorder(
                     borderType: BorderType.RRect,
                     radius: const Radius.circular(10),
                     dashPattern: const [10, 4],
@@ -72,34 +92,43 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  const Text(
-                    "Title",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextField(
-                    controller: _titleController,
-                    icon: Icons.text_fields_outlined,
-                    inputType: TextInputType.text,
-                  ),
-                  const Spacer(),
-                  CustomButton(
-                    text: 'Go Live',
-                    press: () {},
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
+                ),
+          const SizedBox(
+            height: 40,
+          ),
+          const Text(
+            "Title",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.left,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomTextField(
+            controller: _titleController,
+            icon: Icons.text_fields_outlined,
+            inputType: TextInputType.text,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          if (_goingLive)
+            const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          Visibility(
+            visible: !_goingLive,
+            child: CustomButton(
+              text: 'Go Live',
+              press: _startStreaming,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
       ),
     );
   }
@@ -109,6 +138,19 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
     if (_pickedThumbnail != null) {
       _thumbnail = _pickedThumbnail;
       setState(() {});
+    }
+  }
+
+  void _startStreaming() async {
+    toggleKeypad(context);
+    _goingLive = true;
+    setState(() {});
+    String _channelId = await FirestoreMethods().startLiveStream(context, _titleController.text, _thumbnail);
+    _goingLive =  false;
+    setState(() {});
+    if(_channelId.isNotEmpty) {
+      showSnackBar(context, "Nice, livestream has started ");
+      navigateTo(context, BroadCastScreen.routeName);
     }
   }
 

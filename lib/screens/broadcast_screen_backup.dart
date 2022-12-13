@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -22,47 +21,51 @@ class BroadCastScreen extends StatefulWidget {
 }
 
 class _BroadCastScreenState extends State<BroadCastScreen> {
+  late final RtcEngine _engine;
   int? _remoteUid;
+
+  // List<int> _remoteUid = [];
   bool _localUserJoined = false;
-  late RtcEngine _engine;
 
   @override
   void initState() {
-    print("Hello after creating AgoraRtcEngine ${widget.channelId}");
-
     super.initState();
-    initAgora();
+    _initAgoraEngine();
   }
 
-  Future<void> initAgora() async {
-    // retrieve permissions
-    await [Permission.microphone, Permission.camera].request();
+  Future<void> _initAgoraEngine() async {
+    // // retrieve permissions
+    // await [Permission.microphone, Permission.camera].request();
 
     //create the engine
     _engine = createAgoraRtcEngine();
-    await _engine.initialize(RtcEngineContext(
-      appId: agoraId,
-      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
-    ));
+    await _engine.initialize(
+      RtcEngineContext(
+        appId: agoraId,
+        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+      ),
+    );
 
     _engine.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          debugPrint("local user(${Platform.isAndroid ? 'Android' : 'IOS' }) ${connection.localUid} joined");
+          debugPrint("local user <:${connection.localUid}:> joined");
           setState(() {
             _localUserJoined = true;
           });
         },
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          debugPrint("remote user(${Platform.isAndroid ? 'Android' : 'IOS' }) $remoteUid joined");
+          debugPrint("remote user $remoteUid joined");
           setState(() {
-            _remoteUid = remoteUid;
+            // _remoteUid.add(remoteUid);
+            _remoteUid = _remoteUid;
           });
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
-          debugPrint("remote user(${Platform.isAndroid ? 'Android' : 'IOS' }) $remoteUid left channel");
+          debugPrint("remote user <:$remoteUid:> left channel because $reason");
           setState(() {
+            // _remoteUid.removeWhere((element) => element == remoteUid);
             _remoteUid = null;
           });
         },
@@ -70,32 +73,46 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
           debugPrint(
               '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
         },
+        onLeaveChannel: (RtcConnection connection, RtcStats stats) {
+          debugPrint("User LeftChannel $stats");
+          setState(() {
+            // _remoteUid.clear();
+          });
+        },
       ),
     );
-
-    // await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    // await _engine.setClientRole(
+    //   // Either this user creates the stream (Broadcaster), or
+    //   // joins a stream (Audience)
+    //   role: ClientRoleType.clientRoleBroadcaster,
+    // );
     if (widget.isBroadcaster) {
       await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     } else {
       await _engine.setClientRole(role: ClientRoleType.clientRoleAudience);
     }
+
     await _engine.enableVideo();
     await _engine.startPreview();
+    await _engine
+        .setChannelProfile(ChannelProfileType.channelProfileLiveBroadcasting);
 
     await _engine.joinChannel(
       token: agoraTempToken,
-      channelId: widget.channelId,
+      channelId: agoraChannel,
       uid: 0,
-      options: const ChannelMediaOptions(),
+      options: const ChannelMediaOptions(
+        publishCustomAudioSourceId: 4,
+      ),
     );
   }
 
-  // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Live Streaming'),
+        title: const Text('Agora Video Call'),
       ),
       body: Stack(
         children: [
@@ -110,12 +127,12 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
               child: Center(
                 child: _localUserJoined
                     ? AgoraVideoView(
-                        controller: VideoViewController(
-                          rtcEngine: _engine,
-                          canvas: const VideoCanvas(uid: 0),
-                        ),
-                      )
-                    : const CircularProgressIndicator.adaptive(),
+                  controller: VideoViewController(
+                    rtcEngine: _engine,
+                    canvas: const VideoCanvas(uid: 0),
+                  ),
+                )
+                    : const CircularProgressIndicator(),
               ),
             ),
           ),
@@ -127,11 +144,11 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
   // Display remote user's video
   Widget _remoteVideo() {
     if (_remoteUid != null) {
-      print("George this is the remote UID: $_remoteUid");
       return AgoraVideoView(
         controller: VideoViewController.remote(
-          rtcEngine: _engine,
+          // canvas: VideoCanvas(uid: _remoteUid[0]),
           canvas: VideoCanvas(uid: _remoteUid),
+          rtcEngine: _engine,
           connection: RtcConnection(channelId: widget.channelId),
         ),
       );
@@ -141,5 +158,29 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
         textAlign: TextAlign.center,
       );
     }
+  }
+
+  void _joinChannel() async {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      // retrieve permissions
+      await [Permission.microphone, Permission.camera].request();
+      await _engine.joinChannelWithUserAccount(
+          token: agoraTempToken,
+          channelId: agoraChannel,
+          userAccount:
+          Provider.of<UserProvider>(context, listen: false).user.uid);
+    }
+  }
+
+  @override
+  void dispose() {
+    /* Other dispose logic */
+
+    // Releases hardware resources
+    // and should allow reconnection
+    // with hot reload/restart
+    _engine.release();
+
+    super.dispose();
   }
 }

@@ -145,12 +145,20 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
     toggleKeypad(context);
     _goingLive = true;
     setState(() {});
-    String _channelId = await FirestoreMethods().startLiveStream(context, _titleController.text, _thumbnail);
-    _goingLive =  false;
+    String _channelId = await FirestoreMethods()
+        .startLiveStream(context, _titleController.text, _thumbnail);
+    _goingLive = false;
     setState(() {});
-    if(_channelId.isNotEmpty) {
+    if (_channelId.isNotEmpty) {
       showSnackBar(context, "Nice, livestream has started ");
-      navigateTo(context, BroadCastScreen.routeName);
+      // navigateTo(context, BroadCastScreen.routeName);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) =>
+              BroadCastScreen(isBroadcaster: true, channelId: 'test123'),
+              // BroadCastScreen(isBroadcaster: true, channelId: _channelId),
+        ),
+      );
     }
   }
 

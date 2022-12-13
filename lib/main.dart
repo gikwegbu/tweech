@@ -54,7 +54,6 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => const LoginScreen(),
         SignupScreen.routeName: (context) => const SignupScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
-        BroadCastScreen.routeName: (context) => const BroadCastScreen(),
       },
       home: FutureBuilder(
         future: AuthMethods()

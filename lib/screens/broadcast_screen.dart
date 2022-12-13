@@ -1,10 +1,13 @@
-import 'dart:io';
+import 'dart:async';
 
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
+
 import 'package:tweech/config/appId.dart';
+import 'package:provider/provider.dart';
 import 'package:tweech/providers/user_provider.dart';
 
 class BroadCastScreen extends StatefulWidget {
@@ -28,8 +31,6 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
 
   @override
   void initState() {
-    print("Hello after creating AgoraRtcEngine ${widget.channelId}");
-
     super.initState();
     initAgora();
   }
@@ -39,55 +40,32 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
     await [Permission.microphone, Permission.camera].request();
 
     //create the engine
-    _engine = createAgoraRtcEngine();
-    await _engine.initialize(RtcEngineContext(
-      appId: agoraId,
-      channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
-    ));
-
-    _engine.registerEventHandler(
+    _engine = await RtcEngine.create(agoraId);
+    await _engine.enableVideo();
+    _engine.setEventHandler(
       RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
-          debugPrint("local user(${Platform.isAndroid ? 'Android' : 'IOS' }) ${connection.localUid} joined");
+        joinChannelSuccess: (String channel, int uid, int elapsed) {
+          debugPrint("local user $uid joined");
           setState(() {
             _localUserJoined = true;
           });
         },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
-          debugPrint("remote user(${Platform.isAndroid ? 'Android' : 'IOS' }) $remoteUid joined");
+        userJoined: (int uid, int elapsed) {
+          debugPrint("remote user $uid joined");
           setState(() {
-            _remoteUid = remoteUid;
+            _remoteUid = uid;
           });
         },
-        onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
-          debugPrint("remote user(${Platform.isAndroid ? 'Android' : 'IOS' }) $remoteUid left channel");
+        userOffline: (int uid, UserOfflineReason reason) {
+          debugPrint("remote user $uid left channel");
           setState(() {
             _remoteUid = null;
           });
         },
-        onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
-          debugPrint(
-              '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
-        },
       ),
     );
 
-    // await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    if (widget.isBroadcaster) {
-      await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    } else {
-      await _engine.setClientRole(role: ClientRoleType.clientRoleAudience);
-    }
-    await _engine.enableVideo();
-    await _engine.startPreview();
-
-    await _engine.joinChannel(
-      token: agoraTempToken,
-      channelId: widget.channelId,
-      uid: 0,
-      options: const ChannelMediaOptions(),
-    );
+    await _engine.joinChannel(agoraTempToken, widget.channelId, null, 0);
   }
 
   // Create UI with local view and remote view
@@ -95,7 +73,7 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Live Streaming'),
+        title: const Text('Agora Video Call'),
       ),
       body: Stack(
         children: [
@@ -109,13 +87,8 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
               height: 150,
               child: Center(
                 child: _localUserJoined
-                    ? AgoraVideoView(
-                        controller: VideoViewController(
-                          rtcEngine: _engine,
-                          canvas: const VideoCanvas(uid: 0),
-                        ),
-                      )
-                    : const CircularProgressIndicator.adaptive(),
+                    ? const RtcLocalView.SurfaceView()
+                    : const CircularProgressIndicator(),
               ),
             ),
           ),
@@ -127,13 +100,9 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
   // Display remote user's video
   Widget _remoteVideo() {
     if (_remoteUid != null) {
-      print("George this is the remote UID: $_remoteUid");
-      return AgoraVideoView(
-        controller: VideoViewController.remote(
-          rtcEngine: _engine,
-          canvas: VideoCanvas(uid: _remoteUid),
-          connection: RtcConnection(channelId: widget.channelId),
-        ),
+      return RtcRemoteView.SurfaceView(
+        uid: _remoteUid!,
+        channelId: widget.channelId,
       );
     } else {
       return const Text(

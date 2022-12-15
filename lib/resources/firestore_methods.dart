@@ -22,12 +22,13 @@ class FirestoreMethods {
       if (title.isNotEmpty && imageFile != null) {
         // Checking if current User already has a livestream going on
 
-        // if ((await _firestore.collection('livestream').doc('${_user.uid}${_user.username}').get())
-        if ((await _firestore
-                .collection(liveStreamCollection)
-                .doc(_user.uid)
-                .get())
-            .exists) {
+        if ((await _firestore.collection('livestream').doc('${_user.uid}${_user.username}').get())
+        // if ((await _firestore
+        //         .collection(liveStreamCollection)
+        //         .doc(_user.uid)
+        //         .get())
+            .exists)
+        {
           showSnackBar(context, "Oops!! you're already liveStreaming...");
         } else {
           String _thumbnailUrl = await _storageMethods.imageUploader(

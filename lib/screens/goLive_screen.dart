@@ -154,8 +154,8 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) =>
-              BroadCastScreen(isBroadcaster: true, channelId: 'test123'),
-              // BroadCastScreen(isBroadcaster: true, channelId: _channelId),
+              // BroadCastScreen(isBroadcaster: true, channelId: 'test123'),
+              BroadCastScreen(isBroadcaster: true, channelId: _channelId),
         ),
       );
     }

@@ -97,7 +97,8 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
     }
     await _engine.joinChannelWithUserAccount(
       agoraTempToken,
-      widget.channelId,
+      // widget.channelId,
+      "test123",
       Provider.of<UserProvider>(context, listen: false).user.uid,
     );
   }
@@ -204,7 +205,6 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
 
   _chooseCamera() async{
     await _engine.switchCamera().then((value) {
-      print("George this is the switched camera: value ${_engine.switchCamera()}");
       chooseCamera = !chooseCamera;
       setState(() {});
     }).catchError((error) {

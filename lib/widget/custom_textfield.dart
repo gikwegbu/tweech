@@ -12,10 +12,12 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     required this.icon,
     this.iconPress,
+    this.onTap,
     required this.inputType,
   }) : super(key: key);
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onTap;
   final List<TextInputFormatter>? inputFormatters;
   final FocusNode? focusNode;
   final bool obscureText;
@@ -29,6 +31,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      // onFieldSubmitted: onTap,
       keyboardType: inputType,
       inputFormatters: inputFormatters,
       focusNode: focusNode,

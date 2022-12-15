@@ -151,7 +151,6 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
     setState(() {});
     if (_channelId.isNotEmpty) {
       showSnackBar(context, "Nice, livestream has started ");
-      // navigateTo(context, BroadCastScreen.routeName);
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) =>

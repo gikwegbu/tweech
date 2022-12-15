@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:tweech/config/constants.dart';
 import 'package:tweech/models/liveStream_model.dart';
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/resources/storage_methods.dart';
 import 'package:tweech/utils/utils.dart';
+import 'package:uuid/uuid.dart';
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,7 +23,10 @@ class FirestoreMethods {
         // Checking if current User already has a livestream going on
 
         // if ((await _firestore.collection('livestream').doc('${_user.uid}${_user.username}').get())
-        if ((await _firestore.collection('livestream').doc(_user.uid).get())
+        if ((await _firestore
+                .collection(liveStreamCollection)
+                .doc(_user.uid)
+                .get())
             .exists) {
           showSnackBar(context, "Oops!! you're already liveStreaming...");
         } else {
@@ -44,7 +49,7 @@ class FirestoreMethods {
           );
 
           _firestore
-              .collection('livestream')
+              .collection(liveStreamCollection)
               .doc(_channelId)
               .set(liveStream.toMap());
         }
@@ -55,5 +60,64 @@ class FirestoreMethods {
       showSnackBar(context, e.message!);
     }
     return _channelId;
+  }
+
+  Future<void> exitLiveStreaming(BuildContext context, String channelId) async {
+    try {
+      // Getting all the comments under the livestream thread, so we can delete them
+      QuerySnapshot snap = await _firestore
+          .collection(liveStreamCollection)
+          .doc(channelId)
+          .collection(liveStreamCommentsCollection)
+          .get();
+
+      for (int i = 0; i < snap.docs.length; i++) {
+        await _firestore
+            .collection(liveStreamCollection)
+            .doc(channelId)
+            .collection(liveStreamCommentsCollection)
+            .doc(((snap.docs[i].data()! as dynamic)['commentId']))
+            .delete();
+      }
+      await _firestore.collection(liveStreamCollection).doc(channelId).delete();
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
+
+  Future<void> modifyViewCounter(
+      BuildContext context, String id, bool isStepping) async {
+    try {
+      await _firestore.collection(liveStreamCollection).doc(id).update({
+        // 1, means you're entering the livestream
+        // -1 means you're leaving the livestream
+        'viewers': FieldValue.increment(isStepping ? 1 : -1),
+      });
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
+
+  Future<void> chatting(BuildContext context, String msg, String id) async {
+    print("George this is me sending the chat with id: $id and message $msg");
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    try {
+      String commentId = const Uuid().v1();
+      await _firestore
+          .collection(liveStreamCollection)
+          .doc(id)
+          .collection(liveStreamCommentsCollection)
+          .doc(commentId)
+          .set({
+        "username": user.username,
+        "message": msg,
+        "uid": user.uid,
+        "createdAt": DateTime.now(),
+        "commentId": commentId,
+      });
+      print("Message was successfully sent...");
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
   }
 }

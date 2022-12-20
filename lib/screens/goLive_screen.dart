@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:tweech/resources/firestore_methods.dart';
+import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/broadcast_screen.dart';
 import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/utils.dart';
@@ -30,105 +31,107 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ListView(
-        children: [
-          const SizedBox(
-            height: 15,
-          ),
-          _thumbnail != null
-              ? GestureDetector(
-                  onTap: _selectThumbnail,
-                  child: Container(
-                    // height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      child: Image.memory(
-                        _thumbnail!,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                )
-              : GestureDetector(
-                  onTap: _selectThumbnail,
-                  child: DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: const Radius.circular(10),
-                    dashPattern: const [10, 4],
-                    strokeCap: StrokeCap.round,
-                    color: btnColor,
+      child: ResponsiveContainer(
+        child: ListView(
+          children: [
+            const SizedBox(
+              height: 15,
+            ),
+            _thumbnail != null
+                ? GestureDetector(
+                    onTap: _selectThumbnail,
                     child: Container(
+                      // height: 200,
                       width: double.infinity,
-                      height: 150,
                       decoration: BoxDecoration(
-                        color: btnColor.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.folder_open_outlined,
-                            color: btnColor,
-                            size: 40,
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            "Choose video thumbnail",
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 17,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        child: Image.memory(
+                          _thumbnail!,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: _selectThumbnail,
+                    child: DottedBorder(
+                      borderType: BorderType.RRect,
+                      radius: const Radius.circular(10),
+                      dashPattern: const [10, 4],
+                      strokeCap: StrokeCap.round,
+                      color: btnColor,
+                      child: Container(
+                        width: double.infinity,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: btnColor.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.folder_open_outlined,
+                              color: btnColor,
+                              size: 40,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              "Choose video thumbnail",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-          const SizedBox(
-            height: 40,
-          ),
-          const Text(
-            "Title",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+            const SizedBox(
+              height: 40,
             ),
-            textAlign: TextAlign.left,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            controller: _titleController,
-            icon: Icons.text_fields_outlined,
-            inputType: TextInputType.text,
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          if (_goingLive)
-            const Center(
-              child: CircularProgressIndicator.adaptive(),
+            const Text(
+              "Title",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
             ),
-          Visibility(
-            visible: !_goingLive,
-            child: CustomButton(
-              text: 'Go Live',
-              press: _startStreaming,
+            const SizedBox(
+              height: 10,
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
+            CustomTextField(
+              controller: _titleController,
+              icon: Icons.text_fields_outlined,
+              inputType: TextInputType.text,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            if (_goingLive)
+              const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            Visibility(
+              visible: !_goingLive,
+              child: CustomButton(
+                text: 'Go Live',
+                press: _startStreaming,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -24,7 +24,8 @@ class _ChatComponentState extends State<ChatComponent> {
     final userProvider = Provider.of<UserProvider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     return SizedBox(
-      width: double.infinity,
+      //if the platform is desktop, it takes 1/4th of the screen, else we pass the entire screen width...
+      width: size.width > 600 ? size.width * 0.25 :double.infinity,
       child: Column(
         children: [
           Expanded(

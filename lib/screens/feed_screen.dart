@@ -4,6 +4,8 @@ import 'package:tweech/config/constants.dart';
 import 'package:tweech/models/liveStream_model.dart';
 import 'package:timeago/timeago.dart' as tg;
 import 'package:tweech/resources/firestore_methods.dart';
+import 'package:tweech/responsive/layout.dart';
+import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/broadcast_screen.dart';
 
 import '../widget/loadingIndicator.dart';
@@ -78,76 +80,158 @@ class _FeedScreenState extends State<FeedScreen> {
               }
 
               return Expanded(
-                child: ListView.builder(
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (context, index) {
-                    LiveStream livePost =
-                        LiveStream.fromMap(snapshot.data.docs[index].data());
-                    return InkWell(
-                      onTap: () async {
-                        await FirestoreMethods().modifyViewCounter(
-                          context,
-                          livePost.channelId,
-                          true,
+                child: Layout(
+                  desktopLayout: GridView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                      ),
+                      itemBuilder: (context, index) {
+                        LiveStream livePost = LiveStream.fromMap(
+                          snapshot.data.docs[index].data(),
                         );
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => BroadCastScreen(
-                                isBroadcaster: false,
-                                channelId: livePost.channelId),
+                        return InkWell(
+                          onTap: () async {
+                            await FirestoreMethods().modifyViewCounter(
+                              context,
+                              livePost.channelId,
+                              true,
+                            );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BroadCastScreen(
+                                  isBroadcaster: false,
+                                  channelId: livePost.channelId,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            color: Colors.red,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Image.network(
+                                      livePost.image,
+                                      // fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        livePost.username,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Text(
+                                        livePost.title,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Text("${livePost.viewers} watching"),
+                                      Text("Started ${tg.format(
+                                        livePost.createAt.toDate(),
+                                      )}"),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
-                      },
-                      child: Container(
-                        height: size.height * 0.1,
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: Image.network(livePost.image),
-                            ),
-                             SizedBox(
-                              width: size.width * 0.02,
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    livePost.username,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Text(
-                                    livePost.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  Text("${livePost.viewers} watching"),
-                                  Expanded(
-                                    child: Text("Started ${tg.format(
-                                      livePost.createAt.toDate(),
-                                    )}"),
-                                  ),
-                                ],
+                      }),
+                  mobileLayout: ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      LiveStream livePost =
+                          LiveStream.fromMap(snapshot.data.docs[index].data());
+                      return InkWell(
+                        onTap: () async {
+                          await FirestoreMethods().modifyViewCounter(
+                            context,
+                            livePost.channelId,
+                            true,
+                          );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BroadCastScreen(
+                                isBroadcaster: false,
+                                channelId: livePost.channelId,
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.more_vert),
-                            )
-                          ],
+                          );
+                        },
+                        child: Container(
+                          height: size.height * 0.1,
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 16 / 9,
+                                child: Image.network(livePost.image),
+                              ),
+                              SizedBox(
+                                width: size.width * 0.02,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      livePost.username,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(
+                                      livePost.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text("${livePost.viewers} watching"),
+                                    Expanded(
+                                      child: Text("Started ${tg.format(
+                                        livePost.createAt.toDate(),
+                                      )}"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.more_vert),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               );
             },

@@ -26,6 +26,7 @@ Map<String, dynamic> toMap() {
     'username': username,
     'viewers': viewers,
     'channelId': channelId,
+    'createAt': createAt,
   };
 }
 

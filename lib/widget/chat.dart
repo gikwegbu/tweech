@@ -21,7 +21,6 @@ class _ChatComponentState extends State<ChatComponent> {
 
   @override
   Widget build(BuildContext context) {
-    print("George this is the chat channel ID:::${widget.channelId}");
     final userProvider = Provider.of<UserProvider>(context, listen: true);
     final size = MediaQuery.of(context).size;
     return SizedBox(

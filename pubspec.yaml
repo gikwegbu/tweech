@@ -23,6 +23,8 @@ dependencies:
   agora_rtc_engine: ^5.0.1
   permission_handler: ^9.2.0
   uuid: ^3.0.6
+  http: ^0.13.4
+  timeago:
 
 dev_dependencies:
   flutter_test:

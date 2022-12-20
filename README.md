@@ -1,8 +1,12 @@
 # tweech
 
-A new Flutter project.
+This is a Video call flutter project, that levages on firebase and GoLang as services and backend technologies. This project is intended for learning purposes.
 
 ## Getting Started
+
+1. Simply use the flutter run, or vscode extension to run the application for either ios or android
+2. Use flutter run -d chrome --web-renderer html to spin up web.
+3. For web, add the below script in the web/index.html <script src="AgoraRtcWrapper.bundle.js" type="application/javascript"></script>, for Agora to work
 
 This project is a starting point for a Flutter application.
 

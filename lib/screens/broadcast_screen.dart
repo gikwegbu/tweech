@@ -38,6 +38,7 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
   bool chooseCamera = false;
   bool muted = false;
   late final RtcEngine _engine;
+
   // Due to the fact that i'm currently running this applicaiton with the android emulator,
   // I will be using 10.0.2.2:8080 as opposed to the localhost,
   // as the AVD (Android Virtual Device) uses 10.0.2.2 as an alias to my host loopback interface (i.e localhost)
@@ -181,35 +182,35 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
                 if (_supposedChannelId ==
                     widget
                         .channelId) // The person that joined the meeting, won't be able to see it
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    InkWell(
-                      onTap: _chooseCamera,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Switch Camera"),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        onTap: _chooseCamera,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Switch Camera"),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 40),
-                    InkWell(
-                      onTap: _muteAudio,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(muted ? 'Unmute' : 'Mute'),
+                      const SizedBox(height: 40),
+                      InkWell(
+                        onTap: _muteAudio,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(muted ? 'Unmute' : 'Mute'),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 40),
-                    InkWell(
-                      onTap: _exitLiveStreaming,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Back Button'),
+                      const SizedBox(height: 40),
+                      InkWell(
+                        onTap: _exitLiveStreaming,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('Back Button'),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 Expanded(
                   child: ChatComponent(
                     channelId: widget.channelId,
@@ -239,19 +240,16 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
             )
           : _remoteUid
                   .isNotEmpty // Making sure the remote user is in the stream
-              ? Container(
-                  color: Colors.blue,
-                  padding: const EdgeInsets.all(10),
-                  child: RtcRemoteView.SurfaceView(
-                    uid: _remoteUid[0],
-                    channelId: widget.channelId,
-                  ),
-                )
-              : Container(
-                  color: Colors.blue,
-                  padding: const EdgeInsets.all(10),
-                  child: Text("It's empty ooo lol $_remoteUid"),
-                ),
+              ? kIsWeb // Checking if on web, then use SurfaceView else use TextureView
+                  ? RtcRemoteView.SurfaceView(
+                      uid: _remoteUid[0],
+                      channelId: widget.channelId,
+                    )
+                  : RtcRemoteView.TextureView(
+                      uid: _remoteUid[0],
+                      channelId: widget.channelId,
+                    )
+              : Container(),
     );
   }
 

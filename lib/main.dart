@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tweech/providers/user_provider.dart';
@@ -15,7 +16,21 @@ import 'package:tweech/widget/loadingIndicator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // Checking if platform is web
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyAdHeqyREj-x-Ig-AawE0eqkAUX6xJCwJ0",
+          authDomain: "twee-ch.firebaseapp.com",
+          projectId: "twee-ch",
+          storageBucket: "twee-ch.appspot.com",
+          messagingSenderId: "753109146968",
+          appId: "1:753109146968:web:848ce1ddf559200817592d",
+          measurementId: "G-5T5L1XWPMJ"),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
   runApp(
     MultiProvider(
       providers: [

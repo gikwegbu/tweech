@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthMethods _authMethods = AuthMethods();
-  bool _revealPassword = false;
+  bool _revealPassword = true;
   bool _signingin = false;
 
 

@@ -11,5 +11,13 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  updateUser(User user) {
+    _user = User(uid: '', username: '', email: '');
+    notifyListeners();
+  }
 
+  clearUser() {
+    _user = User(uid: '', username: '', email: '');
+    notifyListeners();
+  }
 }

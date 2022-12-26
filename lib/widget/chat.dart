@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tweech/config/constants.dart';
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/resources/firestore_methods.dart';
+import 'package:tweech/utils/colors.dart';
 import 'package:tweech/widget/custom_textfield.dart';
 import 'package:tweech/widget/loadingIndicator.dart';
 
@@ -25,7 +25,7 @@ class _ChatComponentState extends State<ChatComponent> {
     final size = MediaQuery.of(context).size;
     return SizedBox(
       //if the platform is desktop, it takes 1/4th of the screen, else we pass the entire screen width...
-      width: size.width > 600 ? size.width * 0.25 :double.infinity,
+      width: size.width > 600 ? size.width * 0.25 : double.infinity,
       child: Column(
         children: [
           Expanded(
@@ -47,10 +47,10 @@ class _ChatComponentState extends State<ChatComponent> {
                     title: Text(
                       snapshot.data.docs[index]['username'],
                       style: TextStyle(
-                        color:
-                            snapshot.data.docs[index]['uid'] == userProvider.user.uid
-                                ? Colors.blue
-                                : Colors.black,
+                        color: snapshot.data.docs[index]['uid'] ==
+                                userProvider.user.uid
+                            ? btnColor
+                            : Colors.black,
                       ),
                     ),
                     subtitle: Text(snapshot.data.docs[index]['message']),
@@ -63,6 +63,7 @@ class _ChatComponentState extends State<ChatComponent> {
             controller: _chatController,
             icon: Icons.send,
             inputType: TextInputType.text,
+            hintText: "type here...",
             iconPress: () {
               if (_chatController.text.isNotEmpty) {
                 FirestoreMethods()

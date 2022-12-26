@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tweech/screens/browse_screen.dart';
+import 'package:tweech/screens/settings_screen.dart';
 import 'package:tweech/screens/feed_screen.dart';
 import 'package:tweech/screens/goLive_screen.dart';
 import 'package:tweech/utils/colors.dart';
@@ -17,15 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getCurrentPage(int index) {
     _currentPageIndex = index;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   List<Widget> pages = [
     const FeedScreen(),
     const GoLiveScreen(),
-    const BrowseScreen(),
+    const SettingsScreen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -43,17 +41,17 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: getCurrentPage,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: "Following",
+            icon: Icon(Icons.web_stories),
+            label: "Live Streams",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.video_call_outlined),
             label: "Go Live",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.web_stories),
+            icon: Icon(Icons.settings),
             // icon: Icon(Icons.webhook),
-            label: "Browse",
+            label: "Settings",
           ),
         ],
       ),

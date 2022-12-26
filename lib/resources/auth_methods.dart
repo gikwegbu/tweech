@@ -66,4 +66,68 @@ class AuthMethods {
     }
     return res;
   }
+
+  Future<bool> signOutUser(
+    BuildContext context,
+  ) async {
+    bool res = false;
+    try {
+      await _auth.signOut();
+      Provider.of<UserProvider>(context, listen: false).clearUser();
+      res = true;
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+    return res;
+  }
+
+  Future<bool> updatePassword(
+    BuildContext context,
+    String currentPassword,
+    String newPassword,
+  ) async {
+    bool res = false;
+    try {
+      User currentUser = _auth.currentUser!;
+      //Must re-authenticate user before updating the password. Otherwise it may fail or user get signed out.
+
+      final cred = await EmailAuthProvider.credential(
+          email: currentUser.email!, password: currentPassword);
+      // currentUser.updatePassword(newPassword);
+      await currentUser.reauthenticateWithCredential(cred).then((value) async {
+        await currentUser.updatePassword(newPassword).then((_) {
+          res = true;
+        });
+      }).catchError((err) {
+        showSnackBar(context, err.message!);
+      });
+      res = true;
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+    return res;
+  }
+
+  // Future<bool> _changePassword(
+  //     String currentPassword, String newPassword) async {
+  //   bool success = false;
+
+  //   //Create an instance of the current user.
+  //   var user = await FirebaseAuth.instance.currentUser!;
+  //   //Must re-authenticate user before updating the password. Otherwise it may fail or user get signed out.
+
+  //   final cred = await EmailAuthProvider.credential(
+  //       email: user.email!, password: currentPassword);
+  //   await user.reauthenticateWithCredential(cred).then((value) async {
+  //     await user.updatePassword(newPassword).then((_) {
+  //       success = true;
+  //     }).catchError((error) {
+  //       print(error);
+  //     });
+  //   }).catchError((err) {
+  //     print(err);
+  //   });
+
+  //   return success;
+  // }
 }

@@ -19,7 +19,7 @@ navigateTo(BuildContext context, route) {
 }
 
 navigateAndClearPrev(BuildContext context, route) {
-  Navigator.pushReplacementNamed(context, route);
+  Navigator.popAndPushNamed(context, route);
 }
 
 Future<Uint8List?> imagePicker() async {

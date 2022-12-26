@@ -84,7 +84,7 @@ class _GoLiveScreenState extends State<GoLiveScreen> {
                               height: 15,
                             ),
                             Text(
-                              "Choose video thumbnail",
+                              "Add video thumbnail",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 17,

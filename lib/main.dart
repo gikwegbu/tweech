@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
         SignupScreen.routeName: (context) => const SignupScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
       },
+      // home: const OnboardingScreen(),
       home: FutureBuilder(
         future: AuthMethods()
             .getCurrentUser(FirebaseAuth.instance.currentUser != null
@@ -84,7 +85,10 @@ class MyApp extends StatelessWidget {
         }),
         builder: (context, snapShot) {
           if (snapShot.connectionState == ConnectionState.waiting) {
-            return const LoadingIndicator();
+            return Container(
+              color: bgColor,
+              child: const LoadingIndicator(),
+            );
           }
           if (snapShot.hasData) {
             return const HomeScreen();

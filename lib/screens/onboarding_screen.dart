@@ -4,6 +4,7 @@ import 'package:tweech/screens/login_screen.dart';
 import 'package:tweech/screens/signup_screen.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
+import 'package:lottie/lottie.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -20,14 +21,7 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              const Text(
-                "Twee-ch",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
-                ),
-                textAlign: TextAlign.center,
-              ),
+              Lottie.asset('assets/animations/onboarding.json'),
               const SizedBox(
                 height: 20,
               ),
@@ -44,7 +38,10 @@ class OnboardingScreen extends StatelessWidget {
               CustomButton(
                 text: 'Sign Up',
                 press: () {
-                  navigateTo(context, SignupScreen.routeName);
+                  navigateTo(
+                    context,
+                    SignupScreen.routeName,
+                  );
                 },
               ),
               const SizedBox(

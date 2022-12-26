@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tweech/config/constants.dart';
 import 'package:tweech/models/liveStream_model.dart';
 import 'package:timeago/timeago.dart' as tg;
 import 'package:tweech/resources/firestore_methods.dart';
 import 'package:tweech/responsive/layout.dart';
-import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/broadcast_screen.dart';
 
 import '../widget/loadingIndicator.dart';
@@ -57,17 +57,18 @@ class _FeedScreenState extends State<FeedScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Floating lottie file"),
+                        // Lottie.asset('assets/animations/ghost.json'),
+                        Lottie.asset('assets/animations/empty.json'),
                         const SizedBox(
                           height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 28.0),
                           child: Text(
-                            "Enjoy the streams that your friends start when they do.",
+                            "Oops!!! no one is streaming currently",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 14,
                               color: Colors.grey[500],
                             ),
                             textAlign: TextAlign.center,

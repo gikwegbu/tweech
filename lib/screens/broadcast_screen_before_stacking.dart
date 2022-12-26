@@ -2,12 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -212,73 +210,14 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
     navigateAndClearPrev(context, HomeScreen.routeName);
   }
 
-  _showExitLiveStreamingDialog(BuildContext context) {
-    final user = Provider.of<UserProvider>(context, listen: false).user;
-    bool isStreamer = "${user.uid}${user.username}" == widget.channelId;
-    // set up the buttons
-    Widget cancelButton = TextButton(
-      child: const Text(
-        "Cancel",
-        style: TextStyle(
-          color: Colors.grey,
-        ),
-      ),
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    Widget continueButton = TextButton(
-      child: const Text(
-        "Continue",
-        style: TextStyle(color: Colors.red),
-      ),
-      onPressed: () {
-        Navigator.pop(context);
-        _exitLiveStreaming();
-      },
-    );
-
-    // set up the AlertDialog
-    final alert = Platform.isAndroid
-        ? AlertDialog(
-            title: Text(isStreamer ? "End Stream" : "Leave Stream"),
-            content: Text(isStreamer
-                ? "Are you sure you want to end this live stream?"
-                : "Are you sure you want to leave this live stream?"),
-            actions: [
-              cancelButton,
-              continueButton,
-            ],
-          )
-        : CupertinoAlertDialog(
-            title: Text(isStreamer ? "End Stream" : "Leave Stream"),
-            content: Text(isStreamer
-                ? "Are you sure you want to end this live stream?"
-                : "Are you sure you want to leave this live stream?"),
-            actions: [
-              cancelButton,
-              continueButton,
-            ],
-          );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
-
   // Create UI with local view and remote view
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     final user = Provider.of<UserProvider>(context, listen: false).user;
     final _supposedChannelId = "${user.uid}${user.username}";
     return WillPopScope(
       onWillPop: () async {
-        await _showExitLiveStreamingDialog(context);
+        await _exitLiveStreaming();
         return Future.value(true);
       },
       child: Scaffold(
@@ -327,9 +266,7 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
                           const SizedBox(height: 40),
                           if (!kIsWeb)
                             InkWell(
-                              onTap: () {
-                                _showExitLiveStreamingDialog(context);
-                              },
+                              onTap: _exitLiveStreaming,
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Text('Back Button'),
@@ -350,78 +287,50 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
           // Mobile View Section
           mobileLayout: Column(
             children: [
-              Stack(
-                children: [
-                  _renderVideo(user, isSharingScreen),
-                  Positioned(
-                    bottom: 5,
-                    child: ClipRRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                        child: Container(
-                          width: _size.width,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Colors.white.withOpacity(0.5),
-                                Colors.white.withOpacity(0.2),
-                              ],
-                              begin: AlignmentDirectional.topStart,
-                              end: AlignmentDirectional.bottomEnd,
-                            ),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10)),
-                            border: Border.all(
-                              width: 1.5,
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              if (_supposedChannelId == widget.channelId)
-                                IconButton(
-                                  splashRadius: 30,
-                                  onPressed: _chooseCamera,
-                                  icon: Icon(
-                                    chooseCamera
-                                        ? Icons.camera_front
-                                        : Icons.camera_rear,
-                                    size: 20,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              IconButton(
-                                splashRadius: 30,
-                                onPressed: _muteAudio,
-                                icon: Icon(
-                                  muted ? Icons.volume_mute : Icons.volume_down,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              IconButton(
-                                splashRadius: 30,
-                                onPressed: () {
-                                  expandedView = !expandedView;
-                                  setState(() {});
-                                },
-                                icon: Icon(
-                                  expandedView
-                                      ? Icons.close_fullscreen
-                                      : Icons.open_in_full,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
+              _renderVideo(user, isSharingScreen),
+              // if (_supposedChannelId ==
+              //     widget
+              //         .channelId) // The person that joined the meeting, won't be able to see it
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    if (_supposedChannelId == widget.channelId)
+                      IconButton(
+                        splashRadius: 30,
+                        onPressed: _chooseCamera,
+                        icon: Icon(
+                          chooseCamera ? Icons.camera_front : Icons.camera_rear,
+                          size: 40,
+                          color: Colors.grey,
                         ),
                       ),
+                    IconButton(
+                      splashRadius: 30,
+                      onPressed: _muteAudio,
+                      icon: Icon(
+                        muted ? Icons.volume_mute : Icons.volume_down,
+                        size: 40,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                ],
+                    IconButton(
+                      splashRadius: 30,
+                      onPressed: () {
+                        expandedView = !expandedView;
+                        setState(() {});
+                      },
+                      icon: Icon(
+                        expandedView
+                            ? Icons.close_fullscreen
+                            : Icons.open_in_full,
+                        size: 40,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Padding(
@@ -436,22 +345,24 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
         ),
         bottomNavigationBar: "${user.uid}${user.username}" == widget.channelId
             ? Padding(
-                padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                  vertical: 10,
+                ),
                 child: CustomButton(
                   text: 'End Stream',
-                  press: () {
-                    _showExitLiveStreamingDialog(context);
-                  },
+                  press: _exitLiveStreaming,
                   buttonColor: Colors.red,
                 ),
               )
             : Padding(
-                padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                  vertical: 4,
+                ),
                 child: CustomButton(
                   text: 'Leave Stream',
-                  press: () {
-                    _showExitLiveStreamingDialog(context);
-                  },
+                  press: _exitLiveStreaming,
                   buttonColor: Colors.red,
                 ),
               ),
@@ -470,9 +381,13 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
               ? kIsWeb
                   ? const RtcLocalView.SurfaceView.screenShare()
                   : const RtcLocalView.TextureView.screenShare()
-              : const RtcLocalView.SurfaceView(
-                  zOrderMediaOverlay: true,
-                  zOrderOnTop: true,
+              : Container(
+                  color: Colors.green,
+                  padding: const EdgeInsets.all(10),
+                  child: const RtcLocalView.SurfaceView(
+                    zOrderMediaOverlay: true,
+                    zOrderOnTop: true,
+                  ),
                 )
           : isSharingScreen
               ? kIsWeb

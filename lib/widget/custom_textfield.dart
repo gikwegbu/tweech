@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
     required this.icon,
     this.iconPress,
     required this.inputType,
+    this.hintText = '',
   }) : super(key: key);
   final TextEditingController controller;
   final String? Function(String?)? validator;
@@ -22,6 +23,7 @@ class CustomTextField extends StatelessWidget {
   final IconData icon;
   final Function? iconPress;
   final TextInputType inputType;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +35,14 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       obscureText: obscureText,
       decoration: InputDecoration(
+        hintText: hintText,
         suffixIcon: IconButton(
           splashRadius: 20,
           onPressed: () => iconPress!(),
-          icon:  Icon(icon),
+          icon: Icon(
+            icon,
+            color: btnColor,
+          ),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(
@@ -44,9 +50,10 @@ class CustomTextField extends StatelessWidget {
             width: 2,
           ),
         ),
-        enabledBorder: const OutlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: secBgColor,
+            // color: secBgColor,
+            color: inputFieldColor,
           ),
         ),
       ),

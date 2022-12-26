@@ -46,6 +46,9 @@ class _UpdateUsernameState extends State<UpdateUsername> {
               height: 3,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           CustomTextField(
             controller: usernameController,
             icon: Icons.account_circle_outlined,
@@ -84,8 +87,6 @@ class _UpdateUsernameState extends State<UpdateUsername> {
     await _firestoreMethods.updateUsername(context, usernameController.text);
     _updatingUsername = false;
     setState(() {});
-    navigateBack(context);
-    showSnackBar(context, "Update Successfull");
     // once it returns, update your local provider copyWith...
     await _userProvider
         .updateUser(_user.copyWith(username: usernameController.text));

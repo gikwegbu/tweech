@@ -6,7 +6,6 @@ import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 import 'package:tweech/widget/custom_textfield.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -23,8 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthMethods _authMethods = AuthMethods();
   bool _revealPassword = true;
   bool _signingin = false;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +79,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   CustomTextField(
                     inputType: TextInputType.visiblePassword,
-                    icon:
-                    _revealPassword ? Icons.visibility_off : Icons.visibility,
+                    icon: _revealPassword
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                     controller: _passwordController,
                     obscureText: _revealPassword,
                     iconPress: () {
@@ -103,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Center(
                       child: CircularProgressIndicator.adaptive(),
                     ),
-                    Visibility(
+                  Visibility(
                     visible: !_signingin,
                     child: CustomButton(
                       text: 'Login',

@@ -16,9 +16,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   updateUser(User user) {
-    print("Yeah, i'm updating the user profile");
     _user = user;
-    print("George this is the new User: ${user.toMap()}");
     notifyListeners();
   }
 

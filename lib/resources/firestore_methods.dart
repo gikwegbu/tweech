@@ -133,6 +133,8 @@ class FirestoreMethods {
       await _firestore.collection(usersCollection).doc(_id).update({
         'username': newUsername,
       });
+      showSnackBar(context, "Update Successfull");
+      navigateBack(context);
     } on FirebaseException catch (e) {
       showSnackBar(context, e.message!);
     }

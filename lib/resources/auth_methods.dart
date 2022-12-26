@@ -93,7 +93,7 @@ class AuthMethods {
 
       final cred = await EmailAuthProvider.credential(
           email: currentUser.email!, password: currentPassword);
-      // currentUser.updatePassword(newPassword);
+
       await currentUser.reauthenticateWithCredential(cred).then((value) async {
         await currentUser.updatePassword(newPassword).then((_) {
           res = true;
@@ -105,6 +105,7 @@ class AuthMethods {
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
+    navigateBack(context);
     return res;
   }
 

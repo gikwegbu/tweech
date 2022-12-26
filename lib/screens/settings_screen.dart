@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:tweech/components/change_username.dart';
+import 'package:tweech/components/update_password.dart';
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/resources/auth_methods.dart';
 import 'package:tweech/screens/onboarding_screen.dart';
@@ -166,7 +167,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         builder: (context) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: getView(index: 0),
+            child: getView(index: index),
           );
         });
   }
@@ -177,7 +178,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
      */
     switch (index) {
       case 0:
-        return const UpdateUsername();
+        return const UpdatePassword();
       default:
         return const UpdateUsername();
     }

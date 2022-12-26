@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tweech/models/user_model.dart';
 
 class UserProvider extends ChangeNotifier {
-  User _user = User(uid: '', username: '', email: '');
+  User _user = User(
+    uid: '',
+    username: '',
+    email: '',
+  );
 
   User get user => _user;
 
@@ -12,7 +16,9 @@ class UserProvider extends ChangeNotifier {
   }
 
   updateUser(User user) {
-    _user = User(uid: '', username: '', email: '');
+    print("Yeah, i'm updating the user profile");
+    _user = user;
+    print("George this is the new User: ${user.toMap()}");
     notifyListeners();
   }
 

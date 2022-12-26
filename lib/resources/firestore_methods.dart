@@ -82,11 +82,10 @@ class FirestoreMethods {
             .delete();
       }
       await _firestore.collection(liveStreamCollection).doc(channelId).delete();
-      // delete the thumbnail from the storage bucket...
       // Create a reference to the file to delete
       final desertRef = storageRef.child("$liveStreamThumbnails/${_user.uid}");
 
-      // // Delete the file
+      // Delete the file
       await desertRef.delete();
     } on FirebaseException catch (e) {
       showSnackBar(context, e.message!);
@@ -123,6 +122,17 @@ class FirestoreMethods {
         "commentId": commentId,
       });
       print("Message was successfully sent...");
+    } on FirebaseException catch (e) {
+      showSnackBar(context, e.message!);
+    }
+  }
+
+  Future<void> updateUsername(BuildContext context, String newUsername) async {
+    String _id = Provider.of<UserProvider>(context, listen: false).user.uid;
+    try {
+      await _firestore.collection(usersCollection).doc(_id).update({
+        'username': newUsername,
+      });
     } on FirebaseException catch (e) {
       showSnackBar(context, e.message!);
     }

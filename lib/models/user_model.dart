@@ -11,6 +11,15 @@ class User {
     // required this.followers,
   });
 
+  User copyWith({
+    String? username,
+  }) =>
+      User(
+        uid: uid,
+        username: username ?? this.username,
+        email: email,
+      );
+
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -21,11 +30,11 @@ class User {
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
-   return User(
-     uid: map['uid'] ?? "",
-     username: map['username'] ?? "",
-     email: map['email'] ?? "",
-     // followers: map['followers'] ?? "",
-   );
+    return User(
+      uid: map['uid'] ?? "",
+      username: map['username'] ?? "",
+      email: map['email'] ?? "",
+      // followers: map['followers'] ?? "",
+    );
   }
 }

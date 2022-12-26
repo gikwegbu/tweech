@@ -8,7 +8,6 @@ import 'package:timeago/timeago.dart' as tg;
 import 'package:tweech/resources/firestore_methods.dart';
 import 'package:tweech/responsive/layout.dart';
 import 'package:tweech/screens/broadcast_screen.dart';
-import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/mediaUtils.dart';
 
 import '../widget/loadingIndicator.dart';

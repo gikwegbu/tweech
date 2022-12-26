@@ -8,6 +8,7 @@ import 'package:timeago/timeago.dart' as tg;
 import 'package:tweech/resources/firestore_methods.dart';
 import 'package:tweech/responsive/layout.dart';
 import 'package:tweech/screens/broadcast_screen.dart';
+import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/mediaUtils.dart';
 
 import '../widget/loadingIndicator.dart';
@@ -183,24 +184,38 @@ class _FeedScreenState extends State<FeedScreen> {
                         },
                         child: Container(
                           height: size.height * 0.1,
-                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.only(bottom: 30),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 5,
+                                blurRadius: 5,
+                                color: Colors.grey.shade400,
+                                offset: const Offset(2, 2),
+                              ),
+                              const BoxShadow(
+                                spreadRadius: 5,
+                                blurRadius: 5,
+                                color: Colors.white,
+                                offset: Offset(-2, -2),
+                              ),
+                            ],
+                          ),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // AspectRatio(
-                              //   aspectRatio: 16 / 9,
-                              //   child: Image.network(livePost.image),
-                              // ),
-                              AspectRatio(
-                                aspectRatio: 16 / 9,
+                              ClipRRect(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(5),
+                                  bottomLeft: Radius.circular(5),
+                                ),
                                 child: CachedNetworkImage(
                                   imageUrl: livePost.image,
-                                  // imageUrl:
-                                  //     "http://via.placeholder.com/350x150",
                                   placeholder: (context, url) => Lottie.asset(
                                       MediaFileUtils.loadingIndicatorLottie),
                                   errorWidget: (context, url, error) =>
-                                      // Icon(Icons.error),
                                       Lottie.asset(MediaFileUtils.ghostLottie),
                                 ),
                               ),
@@ -208,47 +223,51 @@ class _FeedScreenState extends State<FeedScreen> {
                                 width: size.width * 0.02,
                               ),
                               Expanded(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      livePost.title,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        livePost.title,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "@${livePost.username}",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Colors.grey,
+                                      Text(
+                                        "@${livePost.username}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.grey,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${livePost.viewers} watching",
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        "Started ${tg.format(
-                                          livePost.createAt.toDate(),
-                                        )}",
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "${livePost.viewers} watching",
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          "Started ${tg.format(
+                                            livePost.createAt.toDate(),
+                                          )}",
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               // IconButton(

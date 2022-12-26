@@ -209,7 +209,7 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
         false,
       );
     }
-    navigateAndClearPrev(context, HomeScreen.routeName);
+    navigateBack(context);
   }
 
   _showExitLiveStreamingDialog(BuildContext context) {

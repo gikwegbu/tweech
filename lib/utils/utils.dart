@@ -17,6 +17,9 @@ showSnackBar(BuildContext context, String content) {
 navigateTo(BuildContext context, route) {
   Navigator.pushNamed(context, route);
 }
+navigateBack(BuildContext context) {
+  Navigator.pop(context);
+}
 
 navigateAndClearPrev(BuildContext context, route) {
   Navigator.popAndPushNamed(context, route);

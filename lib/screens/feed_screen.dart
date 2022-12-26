@@ -166,7 +166,7 @@ class _FeedScreenState extends State<FeedScreen> {
                     itemBuilder: (context, index) {
                       LiveStream livePost =
                           LiveStream.fromMap(snapshot.data.docs[index].data());
-                      return InkWell(
+                      return GestureDetector(
                         onTap: () async {
                           await FirestoreMethods().modifyViewCounter(
                             context,
@@ -183,7 +183,7 @@ class _FeedScreenState extends State<FeedScreen> {
                           );
                         },
                         child: Container(
-                          height: size.height * 0.1,
+                          height: size.height * 0.12,
                           margin: const EdgeInsets.only(bottom: 30),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -227,7 +227,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -248,15 +248,9 @@ class _FeedScreenState extends State<FeedScreen> {
                                           color: Colors.grey,
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
                                       Text(
                                         "${livePost.viewers} watching",
                                         overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
                                       ),
                                       Expanded(
                                         child: Text(

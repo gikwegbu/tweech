@@ -37,6 +37,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
               CustomButton(
                 text: 'Sign Up',
+                buttonColor: Colors.transparent,
                 press: () {
                   navigateTo(
                     context,

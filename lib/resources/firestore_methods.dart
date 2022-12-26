@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:tweech/config/constants.dart';
@@ -13,6 +14,7 @@ import 'package:uuid/uuid.dart';
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final StorageMethods _storageMethods = StorageMethods();
+  final storageRef = FirebaseStorage.instance.ref();
 
   Future<String> startLiveStream(
       BuildContext context, String title, Uint8List? imageFile) async {
@@ -22,17 +24,15 @@ class FirestoreMethods {
       if (title.isNotEmpty && imageFile != null) {
         // Checking if current User already has a livestream going on
 
-        if ((await _firestore.collection('livestream').doc('${_user.uid}${_user.username}').get())
-        // if ((await _firestore
-        //         .collection(liveStreamCollection)
-        //         .doc(_user.uid)
-        //         .get())
-            .exists)
-        {
+        if ((await _firestore
+                .collection(liveStreamCollection)
+                .doc('${_user.uid}${_user.username}')
+                .get())
+            .exists) {
           showSnackBar(context, "Oops!! you're already liveStreaming...");
         } else {
           String _thumbnailUrl = await _storageMethods.imageUploader(
-            'Livestream-thumbnails',
+            liveStreamThumbnails,
             imageFile,
             _user.uid,
           );
@@ -64,6 +64,7 @@ class FirestoreMethods {
   }
 
   Future<void> exitLiveStreaming(BuildContext context, String channelId) async {
+    final _user = Provider.of<UserProvider>(context, listen: false).user;
     try {
       // Getting all the comments under the livestream thread, so we can delete them
       QuerySnapshot snap = await _firestore
@@ -81,6 +82,12 @@ class FirestoreMethods {
             .delete();
       }
       await _firestore.collection(liveStreamCollection).doc(channelId).delete();
+      // delete the thumbnail from the storage bucket...
+      // Create a reference to the file to delete
+      final desertRef = storageRef.child("$liveStreamThumbnails/${_user.uid}");
+
+      // // Delete the file
+      await desertRef.delete();
     } on FirebaseException catch (e) {
       showSnackBar(context, e.message!);
     }
@@ -100,7 +107,6 @@ class FirestoreMethods {
   }
 
   Future<void> chatting(BuildContext context, String msg, String id) async {
-    print("George this is me sending the chat with id: $id and message $msg");
     final user = Provider.of<UserProvider>(context, listen: false).user;
     try {
       String commentId = const Uuid().v1();

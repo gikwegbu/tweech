@@ -10,6 +10,7 @@ import 'package:tweech/components/update_password.dart';
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/resources/auth_methods.dart';
 import 'package:tweech/screens/onboarding_screen.dart';
+import 'package:tweech/utils/mediaUtils.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 
@@ -38,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SizedBox(
               height: _size.height * 0.2,
-              child: Lottie.asset('assets/animations/user.json'),
+              child: Lottie.asset(MediaFileUtils.userLottie),
             ),
             const SizedBox(
               height: 10,

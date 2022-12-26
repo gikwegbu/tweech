@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:tweech/config/constants.dart';
 import 'package:tweech/models/liveStream_model.dart';
 import 'package:timeago/timeago.dart' as tg;
@@ -112,6 +111,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             );
                           },
                           child: Container(
+                            color: Colors.red,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,22 +187,9 @@ class _FeedScreenState extends State<FeedScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // AspectRatio(
-                              //   aspectRatio: 16 / 9,
-                              //   child: Image.network(livePost.image),
-                              // ),
                               AspectRatio(
                                 aspectRatio: 16 / 9,
-                                child: CachedNetworkImage(
-                                  imageUrl: livePost.image,
-                                  // imageUrl:
-                                  //     "http://via.placeholder.com/350x150",
-                                  placeholder: (context, url) => Lottie.asset(
-                                      MediaFileUtils.loadingIndicatorLottie),
-                                  errorWidget: (context, url, error) =>
-                                      // Icon(Icons.error),
-                                      Lottie.asset(MediaFileUtils.ghostLottie),
-                                ),
+                                child: Image.network(livePost.image),
                               ),
                               SizedBox(
                                 width: size.width * 0.02,
@@ -214,47 +201,32 @@ class _FeedScreenState extends State<FeedScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      livePost.title,
-                                      overflow: TextOverflow.ellipsis,
+                                      livePost.username,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
                                     ),
                                     Text(
-                                      "@${livePost.username}",
-                                      overflow: TextOverflow.ellipsis,
+                                      livePost.title,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Colors.grey,
+                                        fontSize: 20,
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${livePost.viewers} watching",
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    Text("${livePost.viewers} watching"),
                                     Expanded(
-                                      child: Text(
-                                        "Started ${tg.format(
-                                          livePost.createAt.toDate(),
-                                        )}",
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                      child: Text("Started ${tg.format(
+                                        livePost.createAt.toDate(),
+                                      )}"),
                                     ),
                                   ],
                                 ),
                               ),
-                              // IconButton(
-                              //   onPressed: () {},
-                              //   icon: const Icon(Icons.more_vert),
-                              // )
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.more_vert),
+                              )
                             ],
                           ),
                         ),

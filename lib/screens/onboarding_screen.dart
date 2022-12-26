@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/login_screen.dart';
 import 'package:tweech/screens/signup_screen.dart';
+import 'package:tweech/utils/mediaUtils.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 import 'package:lottie/lottie.dart';
@@ -21,7 +22,7 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Lottie.asset('assets/animations/onboarding.json'),
+              Lottie.asset(MediaFileUtils.onboardingLottie),
               const SizedBox(
                 height: 20,
               ),

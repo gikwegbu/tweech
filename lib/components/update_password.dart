@@ -37,72 +37,75 @@ class _UpdatePasswordState extends State<UpdatePassword> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Text(
-            "Current Password",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              height: 3,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              "Current Password",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                height: 3,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            controller: currentPasswordController,
-            inputType: TextInputType.visiblePassword,
-            icon: _revealCurrentPassword
-                ? Icons.visibility_off
-                : Icons.visibility,
-            obscureText: _revealCurrentPassword,
-            iconPress: () {
-              _revealCurrentPassword = !_revealCurrentPassword;
-              setState(() {});
-            },
-          ),
-          const Text(
-            "New Password",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              height: 3,
+            const SizedBox(
+              height: 10,
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            controller: newPasswordController,
-            inputType: TextInputType.visiblePassword,
-            icon: _revealNewPassword ? Icons.visibility_off : Icons.visibility,
-            obscureText: _revealNewPassword,
-            iconPress: () {
-              _revealNewPassword = !_revealNewPassword;
-              setState(() {});
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          if (_updatingPassword)
-            const Center(
-              child: CircularProgressIndicator.adaptive(),
+            CustomTextField(
+              controller: currentPasswordController,
+              inputType: TextInputType.visiblePassword,
+              icon: _revealCurrentPassword
+                  ? Icons.visibility_off
+                  : Icons.visibility,
+              obscureText: _revealCurrentPassword,
+              iconPress: () {
+                _revealCurrentPassword = !_revealCurrentPassword;
+                setState(() {});
+              },
             ),
-          Visibility(
-            visible: !_updatingPassword,
-            child: CustomButton(
-              text: 'Update Password',
-              press: _updatePassword,
+            const Text(
+              "New Password",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                height: 3,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-        ],
+            const SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              controller: newPasswordController,
+              inputType: TextInputType.visiblePassword,
+              icon:
+                  _revealNewPassword ? Icons.visibility_off : Icons.visibility,
+              obscureText: _revealNewPassword,
+              iconPress: () {
+                _revealNewPassword = !_revealNewPassword;
+                setState(() {});
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            if (_updatingPassword)
+              const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            Visibility(
+              visible: !_updatingPassword,
+              child: CustomButton(
+                text: 'Update Password',
+                press: _updatePassword,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
       ),
     );
   }

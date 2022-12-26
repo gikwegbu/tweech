@@ -34,44 +34,46 @@ class _UpdateUsernameState extends State<UpdateUsername> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Text(
-            "Change Username",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              height: 3,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              "Change Username",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                height: 3,
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextField(
-            controller: usernameController,
-            icon: Icons.account_circle_outlined,
-            inputType: TextInputType.text,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          if (_updatingUsername)
-            const Center(
-              child: CircularProgressIndicator.adaptive(),
+            const SizedBox(
+              height: 10,
             ),
-          Visibility(
-            visible: !_updatingUsername,
-            child: CustomButton(
-              text: 'Update Username',
-              press: _updateusername,
+            CustomTextField(
+              controller: usernameController,
+              icon: Icons.account_circle_outlined,
+              inputType: TextInputType.text,
             ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-        ],
+            const SizedBox(
+              height: 20,
+            ),
+            if (_updatingUsername)
+              const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            Visibility(
+              visible: !_updatingUsername,
+              child: CustomButton(
+                text: 'Update Username',
+                press: _updateusername,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
       ),
     );
   }

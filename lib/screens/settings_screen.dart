@@ -166,7 +166,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         builder: (context) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            // padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            padding: EdgeInsets.only(
+                left: 18.0,
+                right: 18.0,
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: getView(index: index),
           );
         });

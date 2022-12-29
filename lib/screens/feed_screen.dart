@@ -56,26 +56,32 @@ class _FeedScreenState extends State<FeedScreen> {
               if (snapshot.data.docs.length == 0) {
                 return Expanded(
                   child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(MediaFileUtils.emptyFileLottie),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                          child: Text(
-                            "Oops!!! no one is streaming currently",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: Colors.grey[500],
-                            ),
-                            textAlign: TextAlign.center,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Lottie.asset(
+                            MediaFileUtils.emptyFileLottie,
+                            width: size.height * 0.35,
                           ),
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 28.0),
+                            child: Text(
+                              "Oops!!! no one is streaming currently",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -84,82 +90,82 @@ class _FeedScreenState extends State<FeedScreen> {
               return Expanded(
                 child: Layout(
                   desktopLayout: GridView.builder(
-                      itemCount: snapshot.data.docs.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 5,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                      ),
-                      itemBuilder: (context, index) {
-                        LiveStream livePost = LiveStream.fromMap(
-                          snapshot.data.docs[index].data(),
-                        );
-                        return InkWell(
-                          onTap: () async {
-                            await FirestoreMethods().modifyViewCounter(
-                              context,
-                              livePost.channelId,
-                              true,
-                            );
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BroadCastScreen(
-                                  isBroadcaster: false,
-                                  channelId: livePost.channelId,
+                    itemCount: snapshot.data.docs.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                    ),
+                    itemBuilder: (context, index) {
+                      LiveStream livePost = LiveStream.fromMap(
+                        snapshot.data.docs[index].data(),
+                      );
+                      return InkWell(
+                        onTap: () async {
+                          await FirestoreMethods().modifyViewCounter(
+                            context,
+                            livePost.channelId,
+                            true,
+                          );
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => BroadCastScreen(
+                                isBroadcaster: false,
+                                channelId: livePost.channelId,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Image.network(
+                                    livePost.image,
+                                    // fit: BoxFit.cover,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Image.network(
-                                      livePost.image,
-                                      // fit: BoxFit.cover,
-                                      fit: BoxFit.fill,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      livePost.username,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        livePost.username,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
+                                    Text(
+                                      livePost.title,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
                                       ),
-                                      Text(
-                                        livePost.title,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Text("${livePost.viewers} watching"),
-                                      Text("Started ${tg.format(
-                                        livePost.createAt.toDate(),
-                                      )}"),
-                                    ],
-                                  ),
+                                    ),
+                                    Text("${livePost.viewers} watching"),
+                                    Text("Started ${tg.format(
+                                      livePost.createAt.toDate(),
+                                    )}"),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      }),
+                        ),
+                      );
+                    },
+                  ),
                   mobileLayout: ListView.builder(
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {

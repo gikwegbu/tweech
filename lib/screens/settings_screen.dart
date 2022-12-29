@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -9,6 +8,7 @@ import 'package:tweech/components/change_username.dart';
 import 'package:tweech/components/update_password.dart';
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/resources/auth_methods.dart';
+import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/onboarding_screen.dart';
 import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/mediaUtils.dart';
@@ -32,70 +32,72 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return SizedBox(
       width: double.infinity,
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 80,
-            ),
-            SizedBox(
-              height: _size.height * 0.2,
-              child: Lottie.asset(MediaFileUtils.userLottie),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              _user.username,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+        child: ResponsiveContainer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 80,
               ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(
-              _user.email,
-              style: TextStyle(
-                color: Colors.grey[700],
+              SizedBox(
+                height: _size.height * 0.2,
+                child: Lottie.asset(MediaFileUtils.userLottie),
               ),
-            ),
-            const Divider(
-              color: Colors.black,
-              height: 50,
-            ),
-            CustomButton(
-              text: "Change Password",
-              buttonColor: Colors.transparent,
-              press: () {
-                _bottomSheet(0);
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-              text: "Change Username",
-              press: () {
-                _bottomSheet(1);
-              },
-              buttonColor: Colors.transparent,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            CustomButton(
-              text: "Logout",
-              press: () {
-                _showLogoutDialog(context);
-              },
-              buttonColor: red,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-          ],
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                _user.username,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                _user.email,
+                style: TextStyle(
+                  color: Colors.grey[700],
+                ),
+              ),
+              const Divider(
+                color: Colors.black,
+                height: 50,
+              ),
+              CustomButton(
+                text: "Change Password",
+                buttonColor: Colors.transparent,
+                press: () {
+                  _bottomSheet(0);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomButton(
+                text: "Change Username",
+                press: () {
+                  _bottomSheet(1);
+                },
+                buttonColor: Colors.transparent,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomButton(
+                text: "Logout",
+                press: () {
+                  _showLogoutDialog(context);
+                },
+                buttonColor: red,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
       ),
     );

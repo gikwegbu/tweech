@@ -286,58 +286,137 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
           desktopLayout: Row(
             children: [
               Expanded(
-                child: Column(
-                  children: [
-                    _renderVideo(user, isSharingScreen),
-                    if (_supposedChannelId ==
-                        widget
-                            .channelId) // The person that joined the meeting, won't be able to see it
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (!kIsWeb)
-                            InkWell(
-                              onTap: _chooseCamera,
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("Switch Camera"),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _renderVideo(user, isSharingScreen),
+                      ClipRRect(
+                        child: BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                          child: Container(
+                            width: _size.width,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(0.5),
+                                  Colors.white.withOpacity(0.2),
+                                ],
+                                begin: AlignmentDirectional.topStart,
+                                end: AlignmentDirectional.bottomEnd,
+                              ),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                width: 1.5,
+                                color: Colors.white.withOpacity(0.2),
                               ),
                             ),
-                          const SizedBox(height: 40),
-                          InkWell(
-                            onTap: _muteAudio,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(muted ? 'Unmute' : 'Mute'),
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                if (_supposedChannelId == widget.channelId &&
+                                    kIsWeb)
+                                  IconButton(
+                                    splashRadius: 30,
+                                    onPressed: isSharingScreen
+                                        ? _exitScreenShare
+                                        : _screenSharing,
+                                    icon: const Icon(
+                                      Icons.screen_share,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                if (_supposedChannelId == widget.channelId)
+                                  IconButton(
+                                    splashRadius: 30,
+                                    onPressed: _chooseCamera,
+                                    icon: Icon(
+                                      chooseCamera
+                                          ? Icons.camera_front
+                                          : Icons.camera_rear,
+                                      size: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                IconButton(
+                                  splashRadius: 30,
+                                  onPressed: _muteAudio,
+                                  icon: Icon(
+                                    muted
+                                        ? Icons.volume_mute
+                                        : Icons.volume_down,
+                                    size: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                IconButton(
+                                  splashRadius: 30,
+                                  onPressed: () {
+                                    expandedView = !expandedView;
+                                    setState(() {});
+                                  },
+                                  icon: Icon(
+                                    expandedView
+                                        ? Icons.close_fullscreen
+                                        : Icons.open_in_full,
+                                    size: 20,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: 40),
-                          InkWell(
-                            onTap: isSharingScreen
-                                ? _exitScreenShare
-                                : _screenSharing,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(isSharingScreen
-                                  ? "Stop Sharing"
-                                  : "Start Screen Sharing"),
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                          if (!kIsWeb)
-                            InkWell(
-                              onTap: () {
-                                _showExitLiveStreamingDialog(context);
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text('Back Button'),
-                              ),
-                            ),
-                        ],
+                        ),
                       ),
-                  ],
+                      // Column(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   mainAxisSize: MainAxisSize.min,
+                      //   children: [
+                      //     if (!kIsWeb)
+                      //       InkWell(
+                      //         onTap: _chooseCamera,
+                      //         child: const Padding(
+                      //           padding: EdgeInsets.all(8.0),
+                      //           child: Text("Switch Camera"),
+                      //         ),
+                      //       ),
+                      //     const SizedBox(height: 40),
+                      //     InkWell(
+                      //       onTap: _muteAudio,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(8.0),
+                      //         child: Text(muted ? 'Unmute' : 'Mute'),
+                      //       ),
+                      //     ),
+                      //     const SizedBox(height: 40),
+                      //     InkWell(
+                      //       onTap: isSharingScreen
+                      //           ? _exitScreenShare
+                      //           : _screenSharing,
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.all(8.0),
+                      //         child: Text(isSharingScreen
+                      //             ? "Stop Sharing"
+                      //             : "Start Screen Sharing"),
+                      //       ),
+                      //     ),
+                      //     const SizedBox(height: 40),
+                      //     if (!kIsWeb)
+                      //       InkWell(
+                      //         onTap: () {
+                      //           _showExitLiveStreamingDialog(context);
+                      //         },
+                      //         child: const Padding(
+                      //           padding: EdgeInsets.all(8.0),
+                      //           child: Text('Back Button'),
+                      //         ),
+                      //       ),
+                      //   ],
+                      // ),
+                    ],
+                  ),
                 ),
               ),
               Expanded(

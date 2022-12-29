@@ -7,4 +7,5 @@ class MediaFileUtils {
       'assets/animations/loadingIndecator.json';
   static const onboardingLottie = 'assets/animations/onboarding.json';
   static const userLottie = 'assets/animations/user.json';
+  static const icon = 'assets/img/icon.png';
 }

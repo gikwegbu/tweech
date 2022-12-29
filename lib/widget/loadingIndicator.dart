@@ -10,7 +10,7 @@ class LoadingIndicator extends StatelessWidget {
     return Center(
       child: Lottie.asset(
         MediaFileUtils.loadingIndicatorLottie,
-        width: 20,
+        width: 30,
       ),
     );
   }

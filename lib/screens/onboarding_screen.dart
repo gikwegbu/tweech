@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/login_screen.dart';
@@ -22,7 +23,10 @@ class OnboardingScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
+              if(!kIsWeb)
               Lottie.asset(MediaFileUtils.onboardingLottie),
+              if(kIsWeb)
+              Image.asset(MediaFileUtils.icon),
               const SizedBox(
                 height: 20,
               ),

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.netlify.gikwegbu.twee_ch">
-
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Twee-ch"
         android:name="${applicationName}"

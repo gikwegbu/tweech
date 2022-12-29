@@ -91,7 +91,7 @@ class AuthMethods {
       User currentUser = _auth.currentUser!;
       //Must re-authenticate user before updating the password. Otherwise it may fail or user get signed out.
 
-      final cred = await EmailAuthProvider.credential(
+      final cred =  EmailAuthProvider.credential(
           email: currentUser.email!, password: currentPassword);
 
       await currentUser.reauthenticateWithCredential(cred).then((value) async {

@@ -10,6 +10,7 @@ import 'package:tweech/components/update_password.dart';
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/resources/auth_methods.dart';
 import 'package:tweech/screens/onboarding_screen.dart';
+import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/mediaUtils.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
@@ -89,7 +90,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               press: () {
                 _showLogoutDialog(context);
               },
-              buttonColor: Colors.red,
+              buttonColor: red,
             ),
             const SizedBox(
               height: 10,
@@ -116,7 +117,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Widget continueButton = TextButton(
       child: const Text(
         "Continue",
-        style: TextStyle(color: Colors.red),
+        style: TextStyle(color: red),
       ),
       onPressed: _logout,
     );

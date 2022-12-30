@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import 'package:tweech/config/constants.dart';
 import 'package:tweech/models/user_model.dart' as model;
 import 'package:tweech/providers/user_provider.dart';
 import 'package:tweech/utils/utils.dart';
 
 class AuthMethods {
-  final _userRef = FirebaseFirestore.instance.collection('users');
+  final _userRef = FirebaseFirestore.instance.collection(usersCollection);
   final _auth = FirebaseAuth.instance;
 
   Future<Map<String, dynamic>?> getCurrentUser(String? uid) async {
@@ -91,7 +92,7 @@ class AuthMethods {
       User currentUser = _auth.currentUser!;
       //Must re-authenticate user before updating the password. Otherwise it may fail or user get signed out.
 
-      final cred =  EmailAuthProvider.credential(
+      final cred = EmailAuthProvider.credential(
           email: currentUser.email!, password: currentPassword);
 
       await currentUser.reauthenticateWithCredential(cred).then((value) async {

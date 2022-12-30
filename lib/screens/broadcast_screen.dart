@@ -328,7 +328,8 @@ class _BroadCastScreenState extends State<BroadCastScreen> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                if (_supposedChannelId == widget.channelId)
+                                if (_supposedChannelId == widget.channelId &&
+                                    !kIsWeb)
                                   IconButton(
                                     splashRadius: 30,
                                     onPressed: _chooseCamera,

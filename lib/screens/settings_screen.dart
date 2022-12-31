@@ -104,6 +104,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   _showLogoutDialog(BuildContext context) {
+     String title = "Log Out";
+    String content = "Are you sure you want to Log out?";
     // set up the buttons
     Widget cancelButton = TextButton(
       child: const Text(
@@ -127,16 +129,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // set up the AlertDialog
     final alert = Platform.isAndroid
         ? AlertDialog(
-            title: const Text("Log Out"),
-            content: const Text("Are you sure you want to Log out?"),
+           title:  Text(title),
+            content:  Text(content),
             actions: [
               cancelButton,
               continueButton,
             ],
           )
         : CupertinoAlertDialog(
-            title: const Text("Log Out"),
-            content: const Text("Are you sure you want to Log out?"),
+            title:  Text(title),
+            content:  Text(content),
             actions: [
               cancelButton,
               continueButton,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tweech/resources/auth_methods.dart';
 import 'package:tweech/responsive/responsive.dart';
+import 'package:tweech/screens/forgot_password.dart';
 import 'package:tweech/screens/home_screen.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
@@ -65,9 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   const Text(
                     "Password",
                     style: TextStyle(
@@ -95,7 +93,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ForgotPassword(),
+                          ));
+                        },
+                        child: const Text(
+                          "Forgot Password?",
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   if (_signingin)
                     const Center(

@@ -110,26 +110,15 @@ class AuthMethods {
     return res;
   }
 
-  // Future<bool> _changePassword(
-  //     String currentPassword, String newPassword) async {
-  //   bool success = false;
+  Future<bool> passwordReset(BuildContext context, String email) async {
+    bool res = false;
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      res = true;
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context, e.message!);
+    }
 
-  //   //Create an instance of the current user.
-  //   var user = await FirebaseAuth.instance.currentUser!;
-  //   //Must re-authenticate user before updating the password. Otherwise it may fail or user get signed out.
-
-  //   final cred = await EmailAuthProvider.credential(
-  //       email: user.email!, password: currentPassword);
-  //   await user.reauthenticateWithCredential(cred).then((value) async {
-  //     await user.updatePassword(newPassword).then((_) {
-  //       success = true;
-  //     }).catchError((error) {
-  //       print(error);
-  //     });
-  //   }).catchError((err) {
-  //     print(err);
-  //   });
-
-  //   return success;
-  // }
+    return res;
+  }
 }

@@ -3,6 +3,7 @@ import 'package:tweech/resources/auth_methods.dart';
 import 'package:tweech/responsive/responsive.dart';
 import 'package:tweech/screens/forgot_password.dart';
 import 'package:tweech/screens/home_screen.dart';
+import 'package:tweech/utils/colors.dart';
 import 'package:tweech/utils/utils.dart';
 import 'package:tweech/widget/custom_button.dart';
 import 'package:tweech/widget/custom_textfield.dart';
@@ -106,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: const Text(
                           "Forgot Password?",
+                          style: TextStyle(color: btnColor),
                         ),
                       ),
                     ],

@@ -1,4 +1,4 @@
-bool isDev = true;
+bool isDev = false;
 
 String liveStreamCollection = isDev ? "devLivestream" : "livestream";
 
@@ -6,7 +6,8 @@ String liveStreamCommentsCollection = isDev ? "devComments" : "comments";
 
 String liveStreamCommentOrderingFactor = "createdAt";
 
-String liveStreamThumbnails = isDev? "devLivestream-thumbnails": "Livestream-thumbnails";
+String liveStreamThumbnails =
+    isDev ? "devLivestream-thumbnails" : "Livestream-thumbnails";
 
 String usersCollection = isDev ? "devUsers" : "users";
 

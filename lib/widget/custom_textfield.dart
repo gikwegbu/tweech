@@ -41,7 +41,6 @@ class CustomTextField extends StatelessWidget {
           onPressed: () => iconPress!(),
           icon: Icon(
             icon,
-            color: btnColor,
           ),
         ),
         focusedBorder: const OutlineInputBorder(
